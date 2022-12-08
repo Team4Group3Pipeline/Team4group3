@@ -1,37 +1,45 @@
-
 pipeline{
-	agent any  
+	agent{
+		label 'slave3'
+	}
 	stages{
-		stage('1st-member of group3'){
+		stage('1-cloneRepo'){
 			steps{
-				sh 'echo "Gloria Agwu"'
+				sh 'cat /etc/password'
 			}
 		}
-		stage('2nd-member of group3'){
-			steps{
-				sh 'echo "Remy Tienma"'
+		stage('2-parallel-jobs'){
+			parallel{
+				stage('1-subjob1'){
+					steps{
+						sh 'lscpu'
+					}
+				}
+				stage('2-subjob2'){
+					when {
+						branch 'feature'
+					}
+					steps{
+						sh 'df -h'
+					}
+				}
 			}
 		}
-		stage('3rd-member of group3'){
+		stage('3-codetest'){
+			agent {
+				label 'slave1'
+			}
 			steps{
-				sh 'echo "Benoit K"'
+				sh 'free -m'
 			}
 		}
-		stage('4th-member of group3'){
+		stage('4-closing'){
+			agent{
+				label 'slave2'
+			}
 			steps{
-				sh 'ecgo "Dele Adeneye"'
+				echo "we are done"
 			}
 		}
-		stage('5th-member of group3'){
-			steps{
-				sh 'echo "Kehinde Tade'
-			}
-		}
-		stage('6th-member of group3'){
-			steps{
-				sh 'echo "Samuel Ukaegbu"'
-			}
-		}
-		
 	}
 }
