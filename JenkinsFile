@@ -1,6 +1,6 @@
 pipeline{
 	agent{
-		label 'slave3'
+		label 'slave1'
 	}
 	stages{
 		stage('1-cloneRepo'){
@@ -16,8 +16,8 @@ pipeline{
 					}
 				}
 				stage('2-subjob2'){
-					when {
-						branch 'slave3'
+					agent {
+						label 'slave3'
 					}
 					steps{
 						sh 'df -h'
@@ -35,7 +35,7 @@ pipeline{
 		}
 		stage('4-closing'){
 			agent{
-				label 'slave2'
+				label 'slave3'
 			}
 			steps{
 				echo "we are done"
