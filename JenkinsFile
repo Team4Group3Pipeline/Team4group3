@@ -17,7 +17,7 @@ pipeline{
 				}
 				stage('2-subjob2'){
 					when {
-						branch 'feature'
+						branch 'slave3'
 					}
 					steps{
 						sh 'df -h'
